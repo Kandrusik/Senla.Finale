@@ -1,13 +1,13 @@
 package testOrangeHRM;
 
-import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
 import com.github.javafaker.Faker;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
-import pages.*;
+import pages.BasePage;
+import pages.PIM.AddEmployee;
 import pages.PIM.EmployeeList;
 import pages.admin.Job;
 import pages.admin.UserManagement;
@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.*;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.closeWebDriver;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestOrangeHRM extends BasePage {
@@ -53,11 +53,11 @@ public class TestOrangeHRM extends BasePage {
         closeWebDriver();
     }
 
-//    @Owner(value = "Dmitry")
-//    @Severity(SeverityLevel.BLOCKER)
-//    @Description("Login test")
-//    @Issue("11")
-//    @Link(name = "Admin", url = "https://opensource-demo.orangehrmlive.com/")
+    @Owner(value = "Dmitry")
+    @Severity(SeverityLevel.BLOCKER)
+    @Description("Login test")
+    @Issue("11")
+    @Link(name = "Admin", url = "https://opensource-demo.orangehrmlive.com/")
     @Test
     @Order(1)
     public void testLoginTest() throws IOException {
@@ -67,10 +67,11 @@ public class TestOrangeHRM extends BasePage {
                 .welcomeMessage.shouldHave(text("Dashboard"));
     }
 
-//    @Owner(value = "Dmitry")
-//    @Severity(SeverityLevel.CRITICAL)
-//    @Description("Test buy")
-//    @Issue("12")
+    @Owner(value = "Dmitry")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Test buy")
+    @Issue("12")
+    @Flaky
     @Test
     @Order(2)
     public void testAddAndDeleteUser() {
@@ -78,46 +79,52 @@ public class TestOrangeHRM extends BasePage {
         UserManagement userManagement = new UserManagement();
         basePage.setAdminUserButton();
         userManagement.setAddUserButton()
-                    .personInformationUser(adminUserName, "12345678", "12345678")
+                .personInformationUser(adminUserName, "12345678", "12345678")
                 .setSaveButton();
         SelenideElement realName = $(By.xpath("//a[text()='" + adminUserName + "']"));
         realName.shouldHave(visible);
-        String userNameMarkerLocator = "//a[text()='" + adminUserName + "']/../..//input[@name=\"chkSelectRow[]\"]";
-        SelenideElement userNameMarker = $(By.xpath(userNameMarkerLocator));
+        SelenideElement userNameMarker = $(By.xpath("//a[text()='" + adminUserName + "']/../..//input[@name=\"chkSelectRow[]\"]"));
         userNameMarker.click();
         userManagement.deleteUser();
         userNameMarker.shouldNotHave(visible);
     }
 
-    //    @Owner(value = "Dmitry")
-//    @Severity(SeverityLevel.CRITICAL)
-//    @Description("Test buy")
-//    @Issue("12")
+    @Owner(value = "Dmitry")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Test buy")
+    @Issue("12")
     @Test
     @Order(3)
     public void testAddJobAndDelete() {
         Job job = new Job();
+        String firstJob = "Accountant";
+        String secondJob = "Actor";
+        String thirdJob = "Advocate";
         basePage.setAdminUserButton()
                 .setAdminJobTitleButton();
         job.setAddJobButton()
-                .jobDescription("A1", "A1", "A1")
+                .jobDescription(firstJob, "Working with numbers", "Salary 2000$")
                 .setSaveJobButton()
                 .welcomeMessage.shouldHave(text("Job Titles"));
         job.setAddJobButton()
-                .jobDescription("A2", "A2", "A2")
+                .jobDescription(secondJob, "Creative work", "Salary 2000$")
                 .setSaveJobButton()
                 .welcomeMessage.shouldHave(text("Job Titles"));
         job.setAddJobButton()
-                .jobDescription("A3", "A3", "A3")
+                .jobDescription(thirdJob, "Solves problems", "Salary 2000$")
                 .setSaveJobButton()
                 .welcomeMessage.shouldHave(text("Job Titles"));
-        job.setDelete();
+        job.clickOnJobFlag(firstJob)
+                .clickOnJobFlag(secondJob)
+                .clickOnJobFlag(thirdJob)
+                .setDeleteJobTitlesButton()
+                .welcomeMessage.shouldHave(text("Job Titles"));
     }
 
-//    @Owner(value = "Dmitry")
-//    @Severity(SeverityLevel.CRITICAL)
-//    @Description("Test buy")
-//    @Issue("12")
+    @Owner(value = "Dmitry")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Test buy")
+    @Issue("12")
     @Test
     @Order(4)
     public void testAddAndDeleteCandidates() {
@@ -126,7 +133,7 @@ public class TestOrangeHRM extends BasePage {
         basePage.setRecruitmentButton();
         candidates.setAddCandidates()
                 .candidateDescription("Egor", "Aleksandrov",
-                        "Zalesky","egor@gmail.com","+375 (33) 33-00-111",
+                        "Zalesky", "egor@gmail.com", "+375 (33) 33-00-111",
                         "Engineer", "Important information", "2021-04-01")
                 .setSaveCandidates()
                 .setBackToCandidates()
@@ -139,32 +146,28 @@ public class TestOrangeHRM extends BasePage {
     }
 
 
-
-//    @Owner(value = "Dmitry")
-//    @Severity(SeverityLevel.CRITICAL)
-//    @Description("Test buy")
-//    @Issue("12")
+    @Owner(value = "Dmitry")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Test buy")
+    @Issue("12")
     @Test
     @Order(5)
     public void testAddAssignLeave() {
         AssignLeave assignLeave = new AssignLeave();
         basePage.setLeaveButton()
                 .setAssignLeaveButton();
-        assignLeave.leaveDescription("Chenzira Chuki","2021-09-06",
-                        "2021-09-07","I need a little rest");
-//                .setAssignButton();
-//                .checkMessageOverlappingLeave("Overlapping Leave Request Found");
+        assignLeave.leaveDescription("Maggie Manning", "2021-09-06",
+                "2021-09-07", "I need a little rest");
         String beforeLeaveBalance = assignLeave.balanceAssingLiave.text();
         assignLeave.setAssignButton()
                 .setAcceptAssignButton();
-        assignLeave.balanceAssingLiave.shouldHave(text(beforeLeaveBalance));
-//        assignLeave.messageOfSizeDate.filter(visible).shouldHave(CollectionCondition.size(1));
+        assignLeave.balanceAssingLiave.shouldNotHave(text(beforeLeaveBalance));
     }
 
-//    @Owner(value = "Dmitry")
-//    @Severity(SeverityLevel.CRITICAL)
-//    @Description("Test buy")
-//    @Issue("12")
+    @Owner(value = "Dmitry")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Test buy")
+    @Issue("12")
     @Test
     @Order(6)
     public void testChangePersonalDetails() {
@@ -173,19 +176,43 @@ public class TestOrangeHRM extends BasePage {
         basePage.setMyInfoButton();
         String fullNameUserText = personalDetails.fullNameUser.getText();
         personalDetails.setEditAllInformationButton()
-                .changePersonalInformation("Anton",lastName,"213","01",
-                        "1","29")
+                .changePersonalInformation("Anton", lastName, "213", "01",
+                        "1", "29")
                 .setSaveButton();
         personalDetails.fullNameUser.shouldNotHave(text(fullNameUserText));
     }
 
-//    @Owner(value = "Dmitry")
-//    @Severity(SeverityLevel.CRITICAL)
-//    @Description("Test buy")
-//    @Issue("12")
+
+    @Owner(value = "Dmitry")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Test buy")
+    @Issue("12")
     @Test
     @Order(7)
-    public void testCorrectByOder() {
+    public void testAddAndDeleteEmployee() {
+        AddEmployee addEmployee = new AddEmployee();
+        String firstName = "Jacque";
+        String lastName = "Fresco";
+        String employeeID = "1313";
+        basePage.setPIMButton()
+                .setPimAddEmployeeButton();
+        addEmployee.fieldEmployee(firstName, lastName, employeeID)
+                .setSaveButton()
+                .messagePersonalDetails.shouldHave(visible);
+        basePage.setPIMEmployeeListButton();
+        addEmployee.checkLocatorFlagButtonAndClickOn(lastName)
+                .setDeleteButton()
+                .setAcceptDeleteButton()
+                .CheckRemoteEmployeesByID(employeeID);
+    }
+
+    @Owner(value = "Dmitry")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Test buy")
+    @Issue("12")
+    @Test
+    @Order(8)
+    public void testCorrectEmployeeField() {
         EmployeeList employeeList = new EmployeeList();
         basePage.setPIMButton()
                 .setPIMEmployeeListButton();
@@ -199,22 +226,25 @@ public class TestOrangeHRM extends BasePage {
                 .selectedJobTitle.shouldHave(text(expected_jobTitle));
     }
 
+    @Severity(SeverityLevel.NORMAL)
+    @Owner(value = "Dmitry")
+    @Description("Test for removing items from the cart")
+    @Issue("14")
     @Test
-    @Order(8)
+    @Order(9)
     public void testCheckingThePresenceOfFields() {
         Dashboard dashboard = new Dashboard();
         basePage.setDashboardButton();
-        dashboard.notAssignedToSubunits.shouldHave(visible);
-        dashboard.administration.shouldHave(visible);
-        dashboard.clientServices.shouldHave(visible);
-        dashboard.engineering.shouldHave(visible);
-        dashboard.finance.shouldHave(visible);
-        dashboard.humanResources.shouldHave(visible);
-        dashboard.salesMarketing.shouldHave(visible);
+        dashboard.checkLegendPanel()
+                .checkQuickLaunch();
     }
 
+    @Severity(SeverityLevel.TRIVIAL)
+    @Owner(value = "Dmitry")
+    @Description("Test to compare the expected price with the actual")
+    @Issue("15")
     @Test
-    @Order(9)
+    @Order(10)
     public void testPerformanceConfigureKPIs() {
         Configure configure = new Configure();
         String keyIndicator = "Founder";
@@ -223,7 +253,7 @@ public class TestOrangeHRM extends BasePage {
                 .setPerformanceKPIButton();
         configure.messageSearchKeyPerformance.shouldHave(text("Search Key Performance Indicators"));
         configure.setAddKeyPerformanceButton()
-                .changePersonalInformation(keyIndicator,"1","99")
+                .changePersonalInformation(keyIndicator, "1", "99")
                 .setSaveButton()
                 .messageSearchKeyPerformance.shouldHave(text("Search Key Performance Indicators"));
         SelenideElement keyPerformanceFlag = $(By.xpath("//a[text()='" + keyIndicator + "']/../..//input[@name=\"chkSelectRow[]\"]"));
@@ -234,61 +264,10 @@ public class TestOrangeHRM extends BasePage {
     }
 
     @Test
-    @Order(10)
+    @Order(11)
     public void testLogoutTest() {
         Logout logout = new Logout();
         logout.setLogoutButton()
                 .welcomeMessageLogin.shouldHave(text("LOGIN Panel"));
     }
-
-//    @Severity(SeverityLevel.MINOR)
-//    @Owner(value = "Dmitry")
-//    @Description("Purchase cancellation test")
-//    @Issue("13")
-//    @Test
-//    @Order(3)
-//    public void testCancelOfBuyingThings() {
-//        basketPage.scanTableBody()
-//                .setAddAllItemToCartButton();
-//        basePage.setBasketButton();
-//        basketPage.setCheckoutButton();
-//        checkoutPage.yourPersonInformation("Oleg", "Oleg", "12345")
-//                .setContinueOrderButton()
-//                .setCancelOrderButton();
-//        loginPage.welcomeMessage.shouldHave(text("PRODUCTS"));
-//    }
-
-
-//    @Severity(SeverityLevel.NORMAL)
-//    @Owner(value = "Dmitry")
-//    @Description("Test for removing items from the cart")
-//    @Issue("14")
-//    @Test
-//    @Order(4)
-//    public void testDeletingItemsFromTheTrash() {
-//        basketPage.scanTableBody()
-//                .setAddAllItemToCartButton();
-//        basePage.setBasketButton();
-//        basketPage.setCancelAllButtonFromCart();
-//        basePage.setHomeButton()
-//                .shoppingCartBadge.shouldBe(hidden);
-//    }
-
-
-//    @Severity(SeverityLevel.TRIVIAL)
-//    @Owner(value = "Dmitry")
-//    @Description("Test to compare the expected price with the actual")
-//    @Issue("15")
-//    @Flaky
-//    @Test
-//    @Order(5)
-//    public void testCheckingTheTotalAmount() {
-//        basketPage.scanTableBody()
-//                .setAddAllItemToCartButton();
-//        basePage.setBasketButton();
-//        basketPage.setCheckoutButton();
-//        checkoutPage.yourPersonInformation("Oleg", "Oleg", "12345")
-//                .setContinueOrderButton()
-//                .stringPriceToDouble();
-//    }
 }

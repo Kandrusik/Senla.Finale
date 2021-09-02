@@ -8,10 +8,9 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class Logout {
 
-    SelenideElement menuWelcomeButton = $(By.id("welcome"));
-    SelenideElement logoutButton = $(By.xpath("//*[@id=\"welcome-menu\"]//li[3]/a"));
     public SelenideElement welcomeMessageLogin = $(By.id("logInPanelHeading"));
-
+    SelenideElement menuWelcomeButton = $(By.id("welcome"));
+    SelenideElement logoutButton = $(By.xpath("//*[@id=\"welcome-menu\"]//a[text()='Logout']"));
 
     @Step("Log out from the page")
     public Logout setLogoutButton() {

@@ -1,13 +1,10 @@
 package pages.admin;
 
-import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import com.github.javafaker.Faker;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
 
 public class UserManagement {
 
@@ -22,13 +19,12 @@ public class UserManagement {
     SelenideElement deleteUserButton = $(By.id("btnDelete"));
     SelenideElement acceptDeleteUserButton = $(By.id("dialogDeleteBtn"));
 
+    @Step("Deleting a user")
     public UserManagement deleteUser() {
         deleteUserButton.click();
         acceptDeleteUserButton.click();
         return this;
     }
-
-    public SelenideElement welcomeMessage = $(By.cssSelector(".head"));
 
     @Step("Set personal information of user")
     public UserManagement personInformationUser(String user_Name, String user_Password, String user_Password_Confirm) {

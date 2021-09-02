@@ -14,6 +14,7 @@ public class BasePage {
 
     SelenideElement pimButton = $(By.id("menu_pim_viewPimModule"));
     SelenideElement pimEmployeeListButton = $(By.id("menu_pim_viewEmployeeList"));
+    SelenideElement pimAddEmployeeButton = $(By.id("menu_pim_addEmployee"));
 
     SelenideElement leaveButton = $(By.id("menu_leave_viewLeaveModule"));
     SelenideElement leaveListButton = $(By.id("menu_leave_viewLeaveList"));
@@ -34,6 +35,12 @@ public class BasePage {
 
     SelenideElement welcomeButton = $(By.id("welcome"));
     SelenideElement sighOutButton = $(By.cssSelector("#welcome-menu ul > li:nth-child(3) > a"));
+
+    @Step("Set pim add employee button")
+    public BasePage setPimAddEmployeeButton() {
+        pimAddEmployeeButton.click();
+        return this;
+    }
 
     @Step("Set performance KPIs button")
     public BasePage setPerformanceKPIButton() {
@@ -89,13 +96,11 @@ public class BasePage {
         return this;
     }
 
-
     @Step("Set leave button")
     public BasePage setLeaveButton() {
         leaveButton.click();
         return this;
     }
-
 
     @Step("Set recruitment button")
     public void setRecruitmentButton() {

@@ -23,7 +23,7 @@ public class AssignLeave {
     public SelenideElement leaveBalance = $(By.id("assignleave_leaveBalance"));
     public ElementsCollection messageOfSizeDate = $$(By.cssSelector("div.inner > table > tbody > tr"));
     public SelenideElement messageOverlappingLeave = $(By.cssSelector(" div.box.single > div.head > h1"));
-    public SelenideElement balanceAssingLiave = $(By.xpath("//*[@id=\"assignleave_leaveBalance\"]/text()"));
+    public SelenideElement balanceAssingLiave = $(By.xpath("//*[@id=\"assignleave_leaveBalance\"]"));
 
     public AssignLeave checkMessageOverlappingLeave(String text) {
         messageOverlappingLeave.shouldHave(text(text));
