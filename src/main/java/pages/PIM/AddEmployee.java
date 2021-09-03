@@ -4,6 +4,8 @@ import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
+import java.io.File;
+
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
@@ -15,6 +17,9 @@ public class AddEmployee {
     SelenideElement saveButton = $(By.id("btnSave"));
     SelenideElement deleteButton = $(By.id("btnDelete"));
     SelenideElement acceptDeleteButton = $(By.id("dialogDeleteBtn"));
+    SelenideElement employeePhoto = $(By.id("photofile"));
+
+    File file = new File("src/main/resources/testPhoto.jpg");
 
     @Step("Checking the deletion of an employee by ID")
     public void CheckRemoteEmployeesByID(String ID) {
@@ -54,6 +59,7 @@ public class AddEmployee {
         lastNameName.sendKeys(last_name);
         employeeId.clear();
         employeeId.sendKeys(employee_ID);
+        employeePhoto.uploadFile(file);
         return this;
     }
 }

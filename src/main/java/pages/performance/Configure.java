@@ -8,7 +8,7 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class Configure {
 
-    public SelenideElement messageSearchKeyPerformance = $(By.cssSelector("#divFormContainer > div.head > h1"));
+    public SelenideElement messageSearchKeyPerformance = $(By.xpath("//*[@id=\"divFormContainer\"]//*[text()='Search Key Performance Indicators']"));
     SelenideElement addKeyPerformance = $(By.id("btnAdd"));
     SelenideElement listOfJobTitle = $(By.id("defineKpi360_jobTitleCode"));
     SelenideElement chooseQALead = $(By.xpath("//*[@class='formSelect']//*[text()='QA Lead']"));

@@ -10,10 +10,10 @@ public class UserManagement {
 
     SelenideElement addUser = $(By.id("btnAdd"));
     SelenideElement saveButton = $(By.name("btnSave"));
-    SelenideElement userRole = $(By.cssSelector("#systemUser_userType > option:nth-child(1)"));
+    SelenideElement userRole = $(By.xpath("//*[@id=\"systemUser_userType\"]//option[text() = 'Admin']"));
     SelenideElement employeeName = $(By.id("systemUser_employeeName_empName"));
     SelenideElement userName = $(By.id("systemUser_userName"));
-    SelenideElement status = $(By.cssSelector("#systemUser_status > option:nth-child(1)"));
+    SelenideElement status = $(By.xpath("//*[@id=\"systemUser_status\"]//option[text() = 'Enabled']"));
     SelenideElement userPassword = $(By.id("systemUser_password"));
     SelenideElement userPasswordConfirm = $(By.id("systemUser_confirmPassword"));
     SelenideElement deleteUserButton = $(By.id("btnDelete"));

@@ -15,6 +15,7 @@ import pages.dashboard.Dashboard;
 import pages.leave.AssignLeave;
 import pages.login.Login;
 import pages.login.Logout;
+import pages.myInfo.Immigration;
 import pages.myInfo.PersonalDetails;
 import pages.performance.Configure;
 import pages.recruitment.Candidates;
@@ -40,12 +41,11 @@ public class TestOrangeHRM extends BasePage {
 
     @BeforeEach
     public void setUp() throws IOException {
-//        Configuration.headless = true;
-        Configuration.startMaximized = true;
+        Configuration.headless = true;
+//        Configuration.startMaximized = true;
         login.openLoginPage()
                 .singIn()
                 .welcomeMessage.shouldHave(text("Dashboard"));
-        textAttachment("Annotated", "Здесь очень важная информация!");
     }
 
     @AfterEach
@@ -56,7 +56,6 @@ public class TestOrangeHRM extends BasePage {
     @Owner(value = "Dmitry")
     @Severity(SeverityLevel.BLOCKER)
     @Description("Login test")
-    @Issue("11")
     @Link(name = "Admin", url = "https://opensource-demo.orangehrmlive.com/")
     @Test
     @Order(1)
@@ -65,13 +64,13 @@ public class TestOrangeHRM extends BasePage {
         login.openLoginPage()
                 .singIn()
                 .welcomeMessage.shouldHave(text("Dashboard"));
+        textAttachment("Input data", "Login = Admin\n" +
+                "Password = admin123");
     }
 
     @Owner(value = "Dmitry")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Test buy")
-    @Issue("12")
-    @Flaky
     @Test
     @Order(2)
     public void testAddAndDeleteUser() {
@@ -92,7 +91,6 @@ public class TestOrangeHRM extends BasePage {
     @Owner(value = "Dmitry")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Test buy")
-    @Issue("12")
     @Test
     @Order(3)
     public void testAddJobAndDelete() {
@@ -104,27 +102,25 @@ public class TestOrangeHRM extends BasePage {
                 .setAdminJobTitleButton();
         job.setAddJobButton()
                 .jobDescription(firstJob, "Working with numbers", "Salary 2000$")
-                .setSaveJobButton()
-                .welcomeMessage.shouldHave(text("Job Titles"));
+                .setSaveJobButton();
         job.setAddJobButton()
                 .jobDescription(secondJob, "Creative work", "Salary 2000$")
-                .setSaveJobButton()
-                .welcomeMessage.shouldHave(text("Job Titles"));
+                .setSaveJobButton();
         job.setAddJobButton()
                 .jobDescription(thirdJob, "Solves problems", "Salary 2000$")
-                .setSaveJobButton()
-                .welcomeMessage.shouldHave(text("Job Titles"));
+                .setSaveJobButton();
         job.clickOnJobFlag(firstJob)
                 .clickOnJobFlag(secondJob)
                 .clickOnJobFlag(thirdJob)
-                .setDeleteJobTitlesButton()
-                .welcomeMessage.shouldHave(text("Job Titles"));
+                .setDeleteJobTitlesButton();
+        job.checkTheVisibilityOfWork(firstJob)
+                .checkTheVisibilityOfWork(secondJob)
+                .checkTheVisibilityOfWork(thirdJob);
     }
 
     @Owner(value = "Dmitry")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Test buy")
-    @Issue("12")
     @Test
     @Order(4)
     public void testAddAndDeleteCandidates() {
@@ -145,19 +141,21 @@ public class TestOrangeHRM extends BasePage {
                 .acceptCandidateOnThePage.shouldNotHave(visible);
     }
 
-
     @Owner(value = "Dmitry")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Test buy")
-    @Issue("12")
+    @Flaky
     @Test
     @Order(5)
     public void testAddAssignLeave() {
         AssignLeave assignLeave = new AssignLeave();
+        PersonalDetails personalDetails = new PersonalDetails();
+        basePage.setMyInfoButton();
+        personalDetails.setEditAllInformationButton();
         basePage.setLeaveButton()
                 .setAssignLeaveButton();
-        assignLeave.leaveDescription("Maggie Manning", "2021-09-06",
-                "2021-09-07", "I need a little rest");
+        assignLeave.leaveDescription(personalDetails.first_Name + " " + personalDetails.last_Name,
+                "2021-09-06", "2021-09-07", "I need a little rest");
         String beforeLeaveBalance = assignLeave.balanceAssingLiave.text();
         assignLeave.setAssignButton()
                 .setAcceptAssignButton();
@@ -167,28 +165,42 @@ public class TestOrangeHRM extends BasePage {
     @Owner(value = "Dmitry")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Test buy")
-    @Issue("12")
     @Test
     @Order(6)
     public void testChangePersonalDetails() {
+        basePage.setMyInfoButton();
         PersonalDetails personalDetails = new PersonalDetails();
         String lastName = faker.name().lastName();
-        basePage.setMyInfoButton();
         String fullNameUserText = personalDetails.fullNameUser.getText();
         personalDetails.setEditAllInformationButton()
                 .changePersonalInformation("Anton", lastName, "213", "01",
-                        "1", "29")
-                .setSaveButton();
+                        "1", "29", "Boss", "PB",
+                        "Important");
         personalDetails.fullNameUser.shouldNotHave(text(fullNameUserText));
     }
-
 
     @Owner(value = "Dmitry")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Test buy")
-    @Issue("12")
     @Test
     @Order(7)
+    public void testAddImmigrationInformation() {
+        basePage.setMyInfoButton();
+        String number_visa = "2378473";
+        Immigration immigration = new Immigration();
+        immigration.setImmigrationDetailsButton()
+                .setAddImmigrationRecords()
+                .fieldEmployee(number_visa, "2021-09-02", "2022-09-01",
+                        "True", "2021-09-03", "It's good");
+        immigration.setSaveButton()
+                .checkingTheAddedVisa(number_visa);
+    }
+
+    @Owner(value = "Dmitry")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Test buy")
+    @Test
+    @Order(8)
     public void testAddAndDeleteEmployee() {
         AddEmployee addEmployee = new AddEmployee();
         String firstName = "Jacque";
@@ -209,9 +221,8 @@ public class TestOrangeHRM extends BasePage {
     @Owner(value = "Dmitry")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Test buy")
-    @Issue("12")
     @Test
-    @Order(8)
+    @Order(9)
     public void testCorrectEmployeeField() {
         EmployeeList employeeList = new EmployeeList();
         basePage.setPIMButton()
@@ -229,9 +240,8 @@ public class TestOrangeHRM extends BasePage {
     @Severity(SeverityLevel.NORMAL)
     @Owner(value = "Dmitry")
     @Description("Test for removing items from the cart")
-    @Issue("14")
     @Test
-    @Order(9)
+    @Order(10)
     public void testCheckingThePresenceOfFields() {
         Dashboard dashboard = new Dashboard();
         basePage.setDashboardButton();
@@ -242,9 +252,8 @@ public class TestOrangeHRM extends BasePage {
     @Severity(SeverityLevel.TRIVIAL)
     @Owner(value = "Dmitry")
     @Description("Test to compare the expected price with the actual")
-    @Issue("15")
     @Test
-    @Order(10)
+    @Order(11)
     public void testPerformanceConfigureKPIs() {
         Configure configure = new Configure();
         String keyIndicator = "Founder";
@@ -264,7 +273,7 @@ public class TestOrangeHRM extends BasePage {
     }
 
     @Test
-    @Order(11)
+    @Order(12)
     public void testLogoutTest() {
         Logout logout = new Logout();
         logout.setLogoutButton()

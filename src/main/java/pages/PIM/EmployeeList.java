@@ -9,8 +9,6 @@ import static com.codeborne.selenide.Selenide.$;
 public class EmployeeList {
     public SelenideElement firstName = $(By.id("personal_txtEmpFirstName"));
     public SelenideElement lastName = $(By.id("personal_txtEmpLastName"));
-    public SelenideElement employeeID = $(By.id("personal_txtEmployeeId"));
-    public SelenideElement otherID = $(By.id("personal_txtOtherID"));
 
     public SelenideElement firstNameFirstPeople = $(By.cssSelector("tr:nth-child(1) > td:nth-child(3) > a"));
     public SelenideElement lastNameFirstPeople = $(By.cssSelector("tr:nth-child(1) > td:nth-child(4) > a"));
