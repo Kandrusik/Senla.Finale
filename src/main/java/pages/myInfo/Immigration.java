@@ -23,10 +23,33 @@ public class Immigration {
     SelenideElement reviewDate = $(By.id("immigration_i9_review_date"));
     SelenideElement comments = $(By.id("immigration_comments"));
     SelenideElement saveButton = $(By.id("btnSave"));
+    SelenideElement deleteButton = $(By.id("btnDelete"));
+
+    public SelenideElement button = $(By.xpath("//*[text()='" + number + "']/..//*[@name=\"chkImmigration[]\"]"));
+
+    @Step("Checking for button visibility")
+    public Immigration checkingForButtonVisibility(String number) {
+        SelenideElement button = $(By.xpath("//*[text()='" + number + "']/..//*[@name=\"chkImmigration[]\"]"));
+        button.shouldNotHave(visible);
+        return this;
+    }
+
+    @Step("Pressing the button to delete")
+    public Immigration setDeleteButton() {
+        deleteButton.click();
+        return this;
+    }
+
+    @Step("Checking for button visibility")
+    public Immigration clickOnButtonToDelete(String number) {
+        SelenideElement button = $(By.xpath("//*[text()='" + number + "']/..//*[@name=\"chkImmigration[]\"]"));
+        button.click();
+        return this;
+    }
 
     public Immigration checkingTheAddedVisa(String num_visa) {
-        SelenideElement saveButton = $(By.xpath("//*[@id=\"frmImmigrationDelete\"]//*[text()='" + num_visa + "']"));
-        saveButton.shouldHave(visible);
+        SelenideElement Button = $(By.xpath("//*[@id=\"frmImmigrationDelete\"]//*[text()='" + num_visa + "']"));
+        Button.shouldHave(visible);
         return this;
     }
 

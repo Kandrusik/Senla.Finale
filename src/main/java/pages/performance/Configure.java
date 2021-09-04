@@ -4,6 +4,7 @@ import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
 public class Configure {
@@ -19,6 +20,18 @@ public class Configure {
     SelenideElement saveButton = $(By.id("saveBtn"));
     SelenideElement deleteKeyButton = $(By.id("btnDelete"));
     SelenideElement acceptDeleteKeyButton = $(By.id("dialogDeleteBtn"));
+
+    @Step("Checking the deletion of an employee by ID")
+    public void clickOnKeyPerformanceFlag(String keyIndicator) {
+        SelenideElement keyPerformanceFlag = $(By.xpath("//a[text()='" + keyIndicator + "']/../..//input[@name=\"chkSelectRow[]\"]"));
+        keyPerformanceFlag.click();
+    }
+
+    @Step("Checking the deletion of an employee by ID")
+    public void checkKeyPerformanceFlag(String keyIndicator) {
+        SelenideElement keyPerformanceFlag = $(By.xpath("//a[text()='" + keyIndicator + "']/../..//input[@name=\"chkSelectRow[]\"]"));
+        keyPerformanceFlag.shouldNotHave(visible);
+    }
 
     @Step("Set delete key button")
     public Configure setDeleteKeyButton() {

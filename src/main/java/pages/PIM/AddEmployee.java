@@ -22,7 +22,7 @@ public class AddEmployee {
     File file = new File("src/main/resources/testPhoto.jpg");
 
     @Step("Checking the deletion of an employee by ID")
-    public void CheckRemoteEmployeesByID(String ID) {
+    public void checkRemoteEmployeesByID(String ID) {
         SelenideElement flagButton = $(By.xpath("//a[text()='" + ID + "']/../..//*[@name=\"chkSelectRow[]\"]"));
         flagButton.shouldNotHave(visible);
     }
