@@ -14,8 +14,8 @@ public class EmployeeList {
     public SelenideElement lastNameFirstPeople = $(By.cssSelector("tr:nth-child(1) > td:nth-child(4) > a"));
     public SelenideElement jobTitlePeople = $(By.cssSelector("tr:nth-child(1) > td:nth-child(5)"));
     public SelenideElement openFirstPeopleButton = $(By.cssSelector("tr:nth-child(1) > td:nth-child(2) > a"));
-    SelenideElement openJobInfoButton = $(By.xpath("//*[@id=\"sidenav\"]//..//a[text()='Job']"));
     public SelenideElement selectedJobTitle = $(By.xpath("//*[@id=\"job_job_title\"]//..//option[@selected=\"selected\"]"));
+    SelenideElement openJobInfoButton = $(By.xpath("//*[@id=\"sidenav\"]//..//a[text()='Job']"));
 
     @Step("Opening the job information person")
     public EmployeeList setOpenJobInfoButton() {

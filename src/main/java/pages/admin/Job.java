@@ -4,8 +4,6 @@ import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
-import java.io.File;
-
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
@@ -18,9 +16,6 @@ public class Job {
     SelenideElement jobDescription = $(By.id("jobTitle_jobDescription"));
     SelenideElement jobNote = $(By.id("jobTitle_note"));
     SelenideElement saveJob = $(By.id("btnSave"));
-    SelenideElement jobPhoto = $(By.id("jobTitle_jobSpec"));
-
-    File file = new File("src/main/resources/testPhoto.jpg");
 
     @Step("Deleting Created Job")
     public Job setDeleteJobTitlesButton() {
@@ -47,7 +42,6 @@ public class Job {
     public Job jobDescription(String job_title, String job_description, String note) {
         jobTitle.sendKeys(job_title);
         jobDescription.sendKeys(job_description);
-        jobPhoto.uploadFile(file);
         jobNote.sendKeys(note);
         return this;
     }

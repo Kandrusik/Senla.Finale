@@ -11,6 +11,10 @@ import static com.codeborne.selenide.Selenide.$$;
 
 public class AssignLeave {
 
+    public SelenideElement leaveBalance = $(By.id("assignleave_leaveBalance"));
+    public ElementsCollection messageOfSizeDate = $$(By.cssSelector("div.inner > table > tbody > tr"));
+    public SelenideElement messageOverlappingLeave = $(By.cssSelector(" div.box.single > div.head > h1"));
+    public SelenideElement balanceAssingLiave = $(By.xpath("//*[@id=\"assignleave_leaveBalance\"]"));
     SelenideElement employeeName = $(By.id("assignleave_txtEmployee_empName"));
     SelenideElement txtLeaveType = $(By.id("assignleave_txtLeaveType"));
     SelenideElement personalType = $(By.xpath("//*[@id=\"assignleave_txtLeaveType\"]/option[3]"));
@@ -19,11 +23,6 @@ public class AssignLeave {
     SelenideElement comment = $(By.id("assignleave_txtComment"));
     SelenideElement assignButton = $(By.id("assignBtn"));
     SelenideElement acceptAssignButton = $(By.id("confirmOkButton"));
-
-    public SelenideElement leaveBalance = $(By.id("assignleave_leaveBalance"));
-    public ElementsCollection messageOfSizeDate = $$(By.cssSelector("div.inner > table > tbody > tr"));
-    public SelenideElement messageOverlappingLeave = $(By.cssSelector(" div.box.single > div.head > h1"));
-    public SelenideElement balanceAssingLiave = $(By.xpath("//*[@id=\"assignleave_leaveBalance\"]"));
 
     public AssignLeave checkMessageOverlappingLeave(String text) {
         messageOverlappingLeave.shouldHave(text(text));

@@ -1,11 +1,8 @@
 package pages.myInfo;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-
-import java.io.File;
 
 import static com.codeborne.selenide.Selenide.$;
 
@@ -28,12 +25,9 @@ public class PersonalDetails {
     SelenideElement personalMilitarySer = $(By.id("personal_txtMilitarySer"));
     SelenideElement bloodTypeAB = $(By.xpath("//*[@name='custom1']//option[@value='AB+']"));
     SelenideElement addAttachment = $(By.id("btnAddAttachment"));
-    SelenideElement addFile = $(By.id("ufile"));
     SelenideElement addComment = $(By.id("txtAttDesc"));
     SelenideElement saveAttachment = $(By.id("btnSaveAttachment"));
     SelenideElement editCustomField = $(By.id("btnEditCustom"));
-
-    File file = new File("src/main/resources/resume.docx");
 
     @Step("Clicking on the save button")
     public PersonalDetails setSaveButton() {
@@ -75,7 +69,6 @@ public class PersonalDetails {
         bloodTypeAB.click();
         editCustomField.click();
         addAttachment.click();
-        addFile.uploadFile(file);
         addComment.clear();
         addComment.sendKeys(comment);
         saveAttachment.click();
