@@ -37,6 +37,13 @@ public class PersonalDetails {
     }
 
     @Step("Button for changing information")
+    public PersonalDetails clearMiddleName() {
+        middleName.clear();
+        saveButton.click();
+        return this;
+    }
+
+    @Step("Button for changing information")
     public PersonalDetails setEditAllInformationButton() {
         editAllInformationButton.click();
         return this;

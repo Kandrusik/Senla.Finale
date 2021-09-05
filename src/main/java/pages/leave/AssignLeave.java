@@ -8,6 +8,7 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class AssignLeave {
 
+    public SelenideElement acceptAssignButton = $(By.id("confirmOkButton"));
     SelenideElement employeeName = $(By.id("assignleave_txtEmployee_empName"));
     SelenideElement txtLeaveType = $(By.id("assignleave_txtLeaveType"));
     SelenideElement personalType = $(By.xpath("//*[@id=\"assignleave_txtLeaveType\"]/option[3]"));
@@ -15,7 +16,6 @@ public class AssignLeave {
     SelenideElement toDate = $(By.id("assignleave_txtToDate"));
     SelenideElement comment = $(By.id("assignleave_txtComment"));
     SelenideElement assignButton = $(By.id("assignBtn"));
-    SelenideElement acceptAssignButton = $(By.id("confirmOkButton"));
 
     public void leaveDescription(String employee_Name, String from_date, String to_date, String some_comment) {
         employeeName.sendKeys(employee_Name, Keys.ENTER);

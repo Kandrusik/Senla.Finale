@@ -154,7 +154,7 @@ public class TestOrangeHRM extends BasePage {
         String lastName = faker.name().lastName();
         String fullNameUserText = personalDetails.fullNameUser.getText();
         personalDetails.setEditAllInformationButton()
-                .changePersonalInformation("Anton", lastName, "213", "01",
+                .changePersonalInformation("Aristarch", lastName, "213", "01",
                         "1", "29", "Boss", "PB",
                         "Important");
         personalDetails.fullNameUser.shouldNotHave(text(fullNameUserText));
@@ -172,7 +172,8 @@ public class TestOrangeHRM extends BasePage {
         String date = "2021-12-01";
         basePage.setMyInfoButton();
         PersonalDetails personalDetails = new PersonalDetails();
-        personalDetails.setEditAllInformationButton();
+        personalDetails.setEditAllInformationButton()
+                .clearMiddleName();
         basePage.setLeaveButton()
                 .setAssignLeaveButton();
         assignLeave.leaveDescription(personalDetails.first_Name + " " + personalDetails.last_Name,
@@ -185,6 +186,7 @@ public class TestOrangeHRM extends BasePage {
                 .clickCancelOurVacationLocator(date)
                 .setSaveButton();
         leaveList.visibilityCheckCancelOurVacationLocator(date);
+
     }
 
     @Owner(value = "Dmitry")
