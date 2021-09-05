@@ -166,7 +166,7 @@ public class TestOrangeHRM extends BasePage {
     @Flaky
     @Test
     @Order(6)
-    public void testAddAssignLeave() {
+    public void testAddAndCancelAssignLeave() {
         LeaveList leaveList = new LeaveList();
         AssignLeave assignLeave = new AssignLeave();
         String date = "2021-12-01";
