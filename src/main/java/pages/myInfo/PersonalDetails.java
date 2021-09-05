@@ -36,7 +36,7 @@ public class PersonalDetails {
         return this;
     }
 
-    @Step("Button for changing information")
+    @Step("Clear middle name")
     public PersonalDetails clearMiddleName() {
         middleName.clear();
         saveButton.click();
