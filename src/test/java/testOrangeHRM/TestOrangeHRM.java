@@ -43,8 +43,8 @@ public class TestOrangeHRM extends BasePage {
     @Owner(value = "Dmitry")
     @BeforeEach
     public void setUp() throws IOException {
-        Configuration.headless = true;
-//        Configuration.startMaximized = true;
+//        Configuration.headless = true;
+        Configuration.startMaximized = true;
         login.openLoginPage()
                 .singIn()
                 .welcomeMessage.shouldHave(text("Dashboard"));
