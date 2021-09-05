@@ -13,6 +13,7 @@ import pages.admin.Job;
 import pages.admin.UserManagement;
 import pages.dashboard.Dashboard;
 import pages.leave.AssignLeave;
+import pages.leave.LeaveList;
 import pages.login.Login;
 import pages.login.Logout;
 import pages.myInfo.Immigration;
@@ -22,6 +23,8 @@ import pages.recruitment.Candidates;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
@@ -42,8 +45,8 @@ public class TestOrangeHRM extends BasePage {
     @Owner(value = "Dmitry")
     @BeforeEach
     public void setUp() throws IOException {
-//        Configuration.headless = true;
-        Configuration.startMaximized = true;
+        Configuration.headless = true;
+//        Configuration.startMaximized = true;
         login.openLoginPage()
                 .singIn()
                 .welcomeMessage.shouldHave(text("Dashboard"));
@@ -166,18 +169,24 @@ public class TestOrangeHRM extends BasePage {
     @Test
     @Order(6)
     public void testAddAssignLeave() {
+        LeaveList leaveList = new LeaveList();
         AssignLeave assignLeave = new AssignLeave();
+        String date = "2021-12-01";
         basePage.setMyInfoButton();
         PersonalDetails personalDetails = new PersonalDetails();
         personalDetails.setEditAllInformationButton();
         basePage.setLeaveButton()
                 .setAssignLeaveButton();
         assignLeave.leaveDescription(personalDetails.first_Name + " " + personalDetails.last_Name,
-                "2021-09-06", "2021-09-07", "I need a little rest");
-        String beforeLeaveBalance = assignLeave.balanceAssingLiave.text();
-        assignLeave.setAssignButton()
-                .setAcceptAssignButton();
-        assignLeave.balanceAssingLiave.shouldNotHave(text(beforeLeaveBalance));
+                date, date, "I need a little rest");
+        assignLeave.setAssignButton();
+        leaveList.setLeaveListButton()
+                .setPendingApprovalFlag()
+                .setEmployeeField(personalDetails.first_Name + " " + personalDetails.last_Name)
+                .setSearchButton()
+                .clickCancelOurVacationLocator(date)
+                .setSaveButton();
+        leaveList.visibilityCheckCancelOurVacationLocator(date);
     }
 
     @Owner(value = "Dmitry")
