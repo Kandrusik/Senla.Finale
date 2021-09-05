@@ -8,6 +8,7 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class PersonalDetails {
     public SelenideElement firstName = $(By.id("personal_txtEmpFirstName"));
+    public SelenideElement middleName = $(By.id("personal_txtEmpMiddleName"));
     public SelenideElement lastName = $(By.id("personal_txtEmpLastName"));
     public SelenideElement fullNameUser = $(By.id("profile-pic"));
     public String first_Name = firstName.getValue();
@@ -47,6 +48,7 @@ public class PersonalDetails {
                                                      String personal_Name, String personal_MilitarySer, String comment) {
         firstName.clear();
         firstName.sendKeys(first_Name);
+        middleName.clear();
         lastName.clear();
         lastName.sendKeys(last_Name);
         employeeID.clear();
