@@ -12,7 +12,7 @@ public class Configure {
     public SelenideElement messageSearchKeyPerformance = $(By.xpath("//*[@id=\"divFormContainer\"]//*[text()='Search Key Performance Indicators']"));
     SelenideElement addKeyPerformance = $(By.id("btnAdd"));
     SelenideElement listOfJobTitle = $(By.id("defineKpi360_jobTitleCode"));
-    SelenideElement chooseQALead = $(By.xpath("//*[@class='formSelect']//*[text()='QA Automation  Engineer']"));
+    SelenideElement chooseQALead = $(By.xpath("//*[@class='formSelect']//*[text()='QA Lead']"));
     SelenideElement keyPerformanceIndicators = $(By.id("defineKpi360_keyPerformanceIndicators"));
     SelenideElement minRating = $(By.id("defineKpi360_minRating"));
     SelenideElement maxRating = $(By.id("defineKpi360_maxRating"));
