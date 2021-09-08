@@ -8,7 +8,6 @@ import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import pages.BasePage;
 import pages.PIM.AddEmployeePage;
-import pages.PIM.EmployeeListPage;
 import pages.admin.JobPage;
 import pages.admin.UserManagementPage;
 import pages.dashboard.DashboardPage;
@@ -24,7 +23,8 @@ import pages.recruitment.CandidatesPage;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 
@@ -233,30 +233,11 @@ public class TestOrangeHRM extends BasePage {
                 .checkRemoteEmployeesByID(employeeID);
     }
 
-    @Owner(value = "Dmitry")
-    @Severity(SeverityLevel.CRITICAL)
-    @Description("Test data is displayed correctly worker")
-    @Test
-    @Order(9)
-    public void testDataIsDisplayedCorrectlyWorker() {
-        EmployeeListPage employeeListPage = new EmployeeListPage();
-        basePage.setPIMButton()
-                .setPIMEmployeeListButton();
-        String expected_firstName = employeeListPage.firstNameFirstPeople.getText();
-        String expected_lastName = employeeListPage.lastNameFirstPeople.getText();
-        String expected_jobTitle = employeeListPage.jobTitlePeople.text();
-        employeeListPage.clickOpenFirstPeopleButton()
-                .firstName.shouldHave(value(expected_firstName));
-        employeeListPage.lastName.shouldHave(value(expected_lastName));
-        employeeListPage.clickOpenJobInfoButton()
-                .selectedJobTitle.shouldHave(text(expected_jobTitle));
-    }
-
     @Severity(SeverityLevel.NORMAL)
     @Owner(value = "Dmitry")
     @Description("Checking the display of all fields on this page")
     @Test
-    @Order(10)
+    @Order(9)
     public void testCheckingThePresenceOfFields() {
         String first = "Not assigned to Subunits";
         String admin = "Administration";
@@ -273,15 +254,15 @@ public class TestOrangeHRM extends BasePage {
         String myTimesheet = "My Timesheet";
         DashboardPage dashboardPage = new DashboardPage();
         basePage.setDashboardButton();
-        dashboardPage.checkLegendPanel(first,admin,clientService,engineer,finances,humanResources,salesAndMarketing)
-                .checkQuickLaunch(assignLeave, leaveList,timeSheets,applyLeave,myLeave,myTimesheet);
+        dashboardPage.checkLegendPanel(first, admin, clientService, engineer, finances, humanResources, salesAndMarketing)
+                .checkQuickLaunch(assignLeave, leaveList, timeSheets, applyLeave, myLeave, myTimesheet);
     }
 
     @Severity(SeverityLevel.TRIVIAL)
     @Owner(value = "Dmitry")
     @Description("KPI Tuning Performance Test")
     @Test
-    @Order(11)
+    @Order(10)
     public void testPerformanceConfigureKPIs() {
         ConfigurePage configurePage = new ConfigurePage();
         String keyIndicator = "Founder";
@@ -302,7 +283,7 @@ public class TestOrangeHRM extends BasePage {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Logout test")
     @Test
-    @Order(12)
+    @Order(11)
     public void testLogoutTest() {
         LogoutPage logoutPage = new LogoutPage();
         logoutPage.clickLogoutButton()
