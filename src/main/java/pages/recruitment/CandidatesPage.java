@@ -7,7 +7,7 @@ import org.openqa.selenium.Keys;
 
 import static com.codeborne.selenide.Selenide.$;
 
-public class Candidates {
+public class CandidatesPage {
 
     public SelenideElement acceptCandidateOnThePage = $(By.xpath("//a[text()='Egor Aleksandrov Zalesky']"));
     SelenideElement addCandidates = $(By.id("btnAdd"));
@@ -28,48 +28,49 @@ public class Candidates {
     SelenideElement toKeepDataCandidates = $(By.id("addCandidate_consentToKeepData"));
 
     @Step("Pressing the button to confirm the deletion of the candidate")
-    public Candidates setAcceptDeleteCandidatesButton() {
+    public CandidatesPage clickAcceptDeleteCandidatesButton() {
         acceptDeleteCandidates.click();
         return this;
     }
 
     @Step("Clicking on the button to delete a candidate")
-    public Candidates setDeleteCandidatesButton() {
+    public CandidatesPage clickDeleteCandidatesButton() {
         deleteCandidates.click();
         return this;
     }
 
     @Step("Go to the list of candidates")
-    public Candidates setBackToCandidates() {
+    public CandidatesPage clickBackToCandidatesButton() {
         backToCandidates.click();
         return this;
     }
 
     @Step("Clicking on the save candidate button")
-    public Candidates setSaveCandidates() {
+    public CandidatesPage clickSaveCandidatesButton() {
         saveCandidates.click();
         return this;
     }
 
     @Step("Clicking on the add candidate button")
-    public Candidates setAddCandidates() {
+    public CandidatesPage clickAddCandidatesButton() {
         addCandidates.click();
         return this;
     }
 
     @Step("Entering a candidate description")
-    public Candidates candidateDescription(String first_name, String middle_name, String last_name, String email, String contact_NO, String keywords, String comment, String date_of_application) {
-        firstNameCandidates.sendKeys(first_name);
-        middleNameCandidates.sendKeys(middle_name);
-        lastNameCandidates.sendKeys(last_name);
+    public CandidatesPage candidateDescription(String firstName, String middleName, String lastName, String email,
+                                               String contactNO, String keywords, String comment, String dateOfApplication) {
+        firstNameCandidates.sendKeys(firstName);
+        middleNameCandidates.sendKeys(middleName);
+        lastNameCandidates.sendKeys(lastName);
         emailCandidates.sendKeys(email);
-        contactCandidates.sendKeys(contact_NO);
+        contactCandidates.sendKeys(contactNO);
         vacancyCandidates.click();
         softwareEngineerVacancy.click();
         keywordsCandidates.sendKeys(keywords);
         commentCandidates.sendKeys(comment);
         dateCandidates.clear();
-        dateCandidates.sendKeys(date_of_application, Keys.ENTER);
+        dateCandidates.sendKeys(dateOfApplication, Keys.ENTER);
         toKeepDataCandidates.click();
         return this;
     }

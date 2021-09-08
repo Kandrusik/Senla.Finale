@@ -7,19 +7,19 @@ import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import pages.BasePage;
-import pages.PIM.AddEmployee;
-import pages.PIM.EmployeeList;
-import pages.admin.Job;
-import pages.admin.UserManagement;
-import pages.dashboard.Dashboard;
-import pages.leave.AssignLeave;
-import pages.leave.LeaveList;
-import pages.login.Login;
-import pages.login.Logout;
-import pages.myInfo.Immigration;
-import pages.myInfo.PersonalDetails;
-import pages.performance.Configure;
-import pages.recruitment.Candidates;
+import pages.PIM.AddEmployeePage;
+import pages.PIM.EmployeeListPage;
+import pages.admin.JobPage;
+import pages.admin.UserManagementPage;
+import pages.dashboard.DashboardPage;
+import pages.leave.AssignLeavePage;
+import pages.leave.LeaveListPage;
+import pages.login.LoginPage;
+import pages.login.LogoutPage;
+import pages.myInfo.ImmigrationPage;
+import pages.myInfo.PersonalDetailsPage;
+import pages.performance.ConfigurePage;
+import pages.recruitment.CandidatesPage;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -33,7 +33,7 @@ public class TestOrangeHRM extends BasePage {
 
     Faker faker = new Faker();
     BasePage basePage = new BasePage();
-    Login login = new Login();
+    LoginPage loginPage = new LoginPage();
 
     @Attachment(value = "Test attachment [{type}]", type = "text/plain", fileExtension = ".txt")
     public byte[] textAttachment(String type, String content) {
@@ -43,9 +43,9 @@ public class TestOrangeHRM extends BasePage {
     @Owner(value = "Dmitry")
     @BeforeEach
     public void setUp() throws IOException {
-//        Configuration.headless = true;
-        Configuration.startMaximized = true;
-        login.openLoginPage()
+        Configuration.headless = true;
+//        Configuration.startMaximized = true;
+        loginPage.openLoginPage()
                 .singIn()
                 .welcomeMessage.shouldHave(text("Dashboard"));
     }
@@ -63,7 +63,7 @@ public class TestOrangeHRM extends BasePage {
     @Order(1)
     public void testLoginTest() throws IOException {
         basePage.setSighOutButton();
-        login.openLoginPage()
+        loginPage.openLoginPage()
                 .singIn()
                 .welcomeMessage.shouldHave(text("Dashboard"));
         textAttachment("Input data", "Login = Admin\n" +
@@ -77,16 +77,16 @@ public class TestOrangeHRM extends BasePage {
     @Order(2)
     public void testAddAndDeleteUser() {
         String adminUserName = faker.name().fullName();
-        UserManagement userManagement = new UserManagement();
+        UserManagementPage userManagementPage = new UserManagementPage();
         basePage.setAdminUserButton();
-        userManagement.setAddUserButton()
+        userManagementPage.clickAddUserButton()
                 .personInformationUser(adminUserName, "12345678", "12345678")
-                .setSaveButton();
+                .clickSaveButton();
         SelenideElement realName = $(By.xpath("//a[text()='" + adminUserName + "']"));
         realName.shouldHave(visible);
         SelenideElement userNameMarker = $(By.xpath("//a[text()='" + adminUserName + "']/../..//input[@name=\"chkSelectRow[]\"]"));
         userNameMarker.click();
-        userManagement.deleteUser();
+        userManagementPage.clickDeleteUserButton();
         userNameMarker.shouldNotHave(visible);
     }
 
@@ -96,26 +96,26 @@ public class TestOrangeHRM extends BasePage {
     @Test
     @Order(3)
     public void testAddJobAndDelete() {
-        Job job = new Job();
+        JobPage jobPage = new JobPage();
         String firstJob = "Accountant";
         String secondJob = "Actor";
         String thirdJob = "Advocate";
         basePage.setAdminUserButton()
                 .setAdminJobTitleButton();
-        job.setAddJobButton()
+        jobPage.clickAddJobButton()
                 .jobDescription(firstJob, "Working with numbers", "Salary 2000$")
-                .setSaveJobButton();
-        job.setAddJobButton()
+                .clickSaveJobButton();
+        jobPage.clickAddJobButton()
                 .jobDescription(secondJob, "Creative work", "Salary 2000$")
-                .setSaveJobButton();
-        job.setAddJobButton()
+                .clickSaveJobButton();
+        jobPage.clickAddJobButton()
                 .jobDescription(thirdJob, "Solves problems", "Salary 2000$")
-                .setSaveJobButton();
-        job.clickOnJobFlag(firstJob)
+                .clickSaveJobButton();
+        jobPage.clickOnJobFlag(firstJob)
                 .clickOnJobFlag(secondJob)
                 .clickOnJobFlag(thirdJob)
                 .setDeleteJobTitlesButton();
-        job.checkTheVisibilityOfWork(firstJob)
+        jobPage.checkTheVisibilityOfWork(firstJob)
                 .checkTheVisibilityOfWork(secondJob)
                 .checkTheVisibilityOfWork(thirdJob);
     }
@@ -126,20 +126,20 @@ public class TestOrangeHRM extends BasePage {
     @Test
     @Order(4)
     public void testAddAndDeleteCandidates() {
-        Candidates candidates = new Candidates();
+        CandidatesPage candidatesPage = new CandidatesPage();
         String fullNameCandidate = "Egor Aleksandrov Zalesky";
         basePage.setRecruitmentButton();
-        candidates.setAddCandidates()
+        candidatesPage.clickAddCandidatesButton()
                 .candidateDescription("Egor", "Aleksandrov",
                         "Zalesky", "egor@gmail.com", "+375 (33) 33-00-111",
                         "Engineer", "Important information", "2021-04-01")
-                .setSaveCandidates()
-                .setBackToCandidates()
+                .clickSaveCandidatesButton()
+                .clickBackToCandidatesButton()
                 .acceptCandidateOnThePage.shouldHave(visible);
         SelenideElement setOnCandidateFlag = $(By.xpath("//a[text()='" + fullNameCandidate + "']/../..//input[@name=\"chkSelectRow[]\"]"));
         setOnCandidateFlag.click();
-        candidates.setDeleteCandidatesButton()
-                .setAcceptDeleteCandidatesButton()
+        candidatesPage.clickDeleteCandidatesButton()
+                .clickAcceptDeleteCandidatesButton()
                 .acceptCandidateOnThePage.shouldNotHave(visible);
     }
 
@@ -150,14 +150,16 @@ public class TestOrangeHRM extends BasePage {
     @Order(5)
     public void testChangePersonalDetails() {
         basePage.setMyInfoButton();
-        PersonalDetails personalDetails = new PersonalDetails();
+        PersonalDetailsPage personalDetailsPage = new PersonalDetailsPage();
         String lastName = faker.name().lastName();
-        String fullNameUserText = personalDetails.fullNameUser.getText();
-        personalDetails.setEditAllInformationButton()
+        String fullNameUserText = personalDetailsPage.fullNameUser.getText();
+        personalDetailsPage.clickSetEditAllInformationButton()
+                .clearUserFields()
                 .changePersonalInformation("Aristarch", lastName, "213", "01",
                         "1", "29", "Boss", "PB",
-                        "Important");
-        personalDetails.fullNameUser.shouldNotHave(text(fullNameUserText));
+                        "Important")
+                .clickSaveAllPersonalInformation();
+        personalDetailsPage.fullNameUser.shouldNotHave(text(fullNameUserText));
     }
 
     @Owner(value = "Dmitry")
@@ -167,25 +169,25 @@ public class TestOrangeHRM extends BasePage {
     @Test
     @Order(6)
     public void testAddAndCancelAssignLeave() {
-        LeaveList leaveList = new LeaveList();
-        AssignLeave assignLeave = new AssignLeave();
+        LeaveListPage leaveListPage = new LeaveListPage();
+        AssignLeavePage assignLeavePage = new AssignLeavePage();
         String date = "2021-12-01";
         basePage.setMyInfoButton();
-        PersonalDetails personalDetails = new PersonalDetails();
-        personalDetails.setEditAllInformationButton()
-                .clearMiddleName();
+        PersonalDetailsPage personalDetailsPage = new PersonalDetailsPage();
+        personalDetailsPage.clickSetEditAllInformationButton()
+                .clearMiddleNameMethod();
         basePage.setLeaveButton()
                 .setAssignLeaveButton();
-        assignLeave.leaveDescription(personalDetails.first_Name + " " + personalDetails.last_Name,
+        assignLeavePage.leaveDescription(personalDetailsPage.first_Name + " " + personalDetailsPage.last_Name,
                 date, date, "I need a little rest");
-        assignLeave.setAssignButton();
-        leaveList.setLeaveListButton()
-                .setPendingApprovalFlag()
-                .setEmployeeField(personalDetails.first_Name + " " + personalDetails.last_Name)
-                .setSearchButton()
+        assignLeavePage.clickAssignButton();
+        leaveListPage.clickOnLeaveListButton()
+                .clickOnPendingApprovalFlag()
+                .setEmployeeField(personalDetailsPage.first_Name + " " + personalDetailsPage.last_Name)
+                .clickOnSearchButton()
                 .clickCancelOurVacationLocator(date)
-                .setSaveButton();
-        leaveList.visibilityCheckCancelOurVacationLocator(date);
+                .clickSaveButton();
+        leaveListPage.visibilityCheckCancelOurVacationLocator(date);
 
     }
 
@@ -197,12 +199,12 @@ public class TestOrangeHRM extends BasePage {
     public void testAddAndDeleteImmigrationInformation() {
         basePage.setMyInfoButton();
         String number_visa = "2378473";
-        Immigration immigration = new Immigration();
-        immigration.setImmigrationDetailsButton()
-                .setAddImmigrationRecords()
+        ImmigrationPage immigrationPage = new ImmigrationPage();
+        immigrationPage.clickImmigrationDetailsButton()
+                .clickAddImmigrationRecords()
                 .fieldEmployee(number_visa, "2021-09-02", "2022-09-01",
                         "True", "2021-09-03", "It's good");
-        immigration.setSaveButton()
+        immigrationPage.clickSaveButton()
                 .checkingTheAddedVisa(number_visa)
                 .clickOnButtonToDelete(number_visa)
                 .setDeleteButton()
@@ -215,19 +217,19 @@ public class TestOrangeHRM extends BasePage {
     @Test
     @Order(8)
     public void testCheckForAddingAndRemovingWorker() {
-        AddEmployee addEmployee = new AddEmployee();
+        AddEmployeePage addEmployeePage = new AddEmployeePage();
         String firstName = "Jacque";
         String lastName = "Fresco";
         String employeeID = "1313";
         basePage.setPIMButton()
                 .setPimAddEmployeeButton();
-        addEmployee.fieldEmployee(firstName, lastName, employeeID)
-                .setSaveButton()
+        addEmployeePage.fieldEmployee(firstName, lastName, employeeID)
+                .clickSaveButton()
                 .messagePersonalDetails.shouldHave(visible);
         basePage.setPIMEmployeeListButton();
-        addEmployee.checkLocatorFlagButtonAndClickOn(lastName)
-                .setDeleteButton()
-                .setAcceptDeleteButton()
+        addEmployeePage.checkLocatorFlagButtonAndClickOn(lastName)
+                .clickDeleteButton()
+                .clickAcceptDeleteButton()
                 .checkRemoteEmployeesByID(employeeID);
     }
 
@@ -237,16 +239,16 @@ public class TestOrangeHRM extends BasePage {
     @Test
     @Order(9)
     public void testDataIsDisplayedCorrectlyWorker() {
-        EmployeeList employeeList = new EmployeeList();
+        EmployeeListPage employeeListPage = new EmployeeListPage();
         basePage.setPIMButton()
                 .setPIMEmployeeListButton();
-        String expected_firstName = employeeList.firstNameFirstPeople.getText();
-        String expected_lastName = employeeList.lastNameFirstPeople.getText();
-        String expected_jobTitle = employeeList.jobTitlePeople.text();
-        employeeList.setOpenFirstPeopleButton()
+        String expected_firstName = employeeListPage.firstNameFirstPeople.getText();
+        String expected_lastName = employeeListPage.lastNameFirstPeople.getText();
+        String expected_jobTitle = employeeListPage.jobTitlePeople.text();
+        employeeListPage.clickOpenFirstPeopleButton()
                 .firstName.shouldHave(value(expected_firstName));
-        employeeList.lastName.shouldHave(value(expected_lastName));
-        employeeList.setOpenJobInfoButton()
+        employeeListPage.lastName.shouldHave(value(expected_lastName));
+        employeeListPage.clickOpenJobInfoButton()
                 .selectedJobTitle.shouldHave(text(expected_jobTitle));
     }
 
@@ -256,10 +258,23 @@ public class TestOrangeHRM extends BasePage {
     @Test
     @Order(10)
     public void testCheckingThePresenceOfFields() {
-        Dashboard dashboard = new Dashboard();
+        String first = "Not assigned to Subunits";
+        String admin = "Administration";
+        String clientService = "Client Services";
+        String engineer = "Engineering";
+        String finances = "Finance";
+        String humanResources = "Human Resources";
+        String salesAndMarketing = "Sales & Marketing";
+        String assignLeave = "Assign Leave";
+        String leaveList = "Leave List";
+        String timeSheets = "Timesheets";
+        String applyLeave = "Apply Leave";
+        String myLeave = "My Leave";
+        String myTimesheet = "My Timesheet";
+        DashboardPage dashboardPage = new DashboardPage();
         basePage.setDashboardButton();
-        dashboard.checkLegendPanel()
-                .checkQuickLaunch();
+        dashboardPage.checkLegendPanel(first,admin,clientService,engineer,finances,humanResources,salesAndMarketing)
+                .checkQuickLaunch(assignLeave, leaveList,timeSheets,applyLeave,myLeave,myTimesheet);
     }
 
     @Severity(SeverityLevel.TRIVIAL)
@@ -268,20 +283,20 @@ public class TestOrangeHRM extends BasePage {
     @Test
     @Order(11)
     public void testPerformanceConfigureKPIs() {
-        Configure configure = new Configure();
+        ConfigurePage configurePage = new ConfigurePage();
         String keyIndicator = "Founder";
         basePage.setPerformanceButton()
                 .setPerformanceConfigureButton()
                 .setPerformanceKPIButton();
-        configure.messageSearchKeyPerformance.shouldHave(text("Search Key Performance Indicators"));
-        configure.setAddKeyPerformanceButton()
+        configurePage.messageSearchKeyPerformance.shouldHave(text("Search Key Performance Indicators"));
+        configurePage.clickSetAddKeyPerformanceButton()
                 .changePersonalInformation(keyIndicator, "1", "99")
-                .setSaveButton()
+                .clickSetSaveButton()
                 .messageSearchKeyPerformance.shouldHave(text("Search Key Performance Indicators"));
-        configure.clickOnKeyPerformanceFlag(keyIndicator);
-        configure.setDeleteKeyButton()
-                .setAcceptDeleteKeyButton();
-        configure.checkKeyPerformanceFlag(keyIndicator);
+        configurePage.clickOnKeyPerformanceFlag(keyIndicator);
+        configurePage.clickSetDeleteKeyButton()
+                .clickSetAcceptDeleteKeyButton();
+        configurePage.checkKeyPerformanceFlag(keyIndicator);
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -289,8 +304,8 @@ public class TestOrangeHRM extends BasePage {
     @Test
     @Order(12)
     public void testLogoutTest() {
-        Logout logout = new Logout();
-        logout.setLogoutButton()
+        LogoutPage logoutPage = new LogoutPage();
+        logoutPage.clickLogoutButton()
                 .welcomeMessageLogin.shouldHave(text("LOGIN Panel"));
     }
 }

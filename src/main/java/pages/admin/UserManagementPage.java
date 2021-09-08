@@ -6,7 +6,7 @@ import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
 
-public class UserManagement {
+public class UserManagementPage {
 
     SelenideElement addUser = $(By.id("btnAdd"));
     SelenideElement saveButton = $(By.name("btnSave"));
@@ -20,31 +20,31 @@ public class UserManagement {
     SelenideElement acceptDeleteUserButton = $(By.id("dialogDeleteBtn"));
 
     @Step("Deleting a user")
-    public UserManagement deleteUser() {
+    public UserManagementPage clickDeleteUserButton() {
         deleteUserButton.click();
         acceptDeleteUserButton.click();
         return this;
     }
 
     @Step("Set personal information of user")
-    public UserManagement personInformationUser(String user_Name, String user_Password, String user_Password_Confirm) {
+    public UserManagementPage personInformationUser(String name, String password, String passwordConfirm) {
         userRole.click();
         employeeName.setValue("a").pressEnter();
-        userName.sendKeys(user_Name);
+        userName.sendKeys(name);
         status.click();
-        userPassword.sendKeys(user_Password);
-        userPasswordConfirm.sendKeys(user_Password_Confirm);
+        userPassword.sendKeys(password);
+        userPasswordConfirm.sendKeys(passwordConfirm);
         return this;
     }
 
     @Step("Set add user button")
-    public UserManagement setAddUserButton() {
+    public UserManagementPage clickAddUserButton() {
         addUser.click();
         return this;
     }
 
     @Step("Set save button")
-    public UserManagement setSaveButton() {
+    public UserManagementPage clickSaveButton() {
         saveButton.click();
         return this;
     }

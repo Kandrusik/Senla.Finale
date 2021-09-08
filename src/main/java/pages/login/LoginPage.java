@@ -11,14 +11,14 @@ import java.util.Properties;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
-public class Login {
+public class LoginPage {
     SelenideElement loginField = $(By.id("txtUsername"));
     SelenideElement passwordField = $(By.id("txtPassword"));
     public SelenideElement signInButton = $(By.name("Submit"));
     public SelenideElement welcomeMessage = $(By.cssSelector("#content div > h1"));
 
     @Step("Sing in")
-    public Login singIn() throws IOException {
+    public LoginPage singIn() throws IOException {
         Properties props = new Properties();
         props.load(new FileInputStream("src/main/resources/user.properties"));
         loginField.sendKeys(props.getProperty("user.username"));
@@ -28,7 +28,7 @@ public class Login {
     }
 
     @Step("Open login page")
-    public Login openLoginPage() {
+    public LoginPage openLoginPage() {
         open("https://opensource-demo.orangehrmlive.com/");
         return this;
     }

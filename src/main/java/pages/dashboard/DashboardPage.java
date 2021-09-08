@@ -7,21 +7,7 @@ import org.openqa.selenium.By;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
-public class Dashboard {
-    String first = "Not assigned to Subunits";
-    String admin = "Administration";
-    String client_service = "Client Services";
-    String engineer = "Engineering";
-    String finances = "Finance";
-    String human_resources = "Human Resources";
-    String sales_and_marketing = "Sales & Marketing";
-
-    String assignLeave = "Assign Leave";
-    String leaveList = "Leave List";
-    String timeSheets = "Timesheets";
-    String applyLeave = "Apply Leave";
-    String myLeave = "My Leave";
-    String myTimesheet = "My Timesheet";
+public class DashboardPage {
 
     public void locatorLegendPanel(String name) {
         SelenideElement checkLegendPanel = $(By.xpath("//*[@class=\"legendLabel\"]/../*[text()='" + name + "']"));
@@ -34,7 +20,8 @@ public class Dashboard {
     }
 
     @Step("Checking for compliance of Quick Launch fields")
-    public Dashboard checkQuickLaunch() {
+    public DashboardPage checkQuickLaunch(String assignLeave, String leaveList, String timeSheets,
+                                          String applyLeave, String myLeave, String myTimesheet) {
         locatorQuickLaunch(assignLeave);
         locatorQuickLaunch(leaveList);
         locatorQuickLaunch(timeSheets);
@@ -45,14 +32,15 @@ public class Dashboard {
     }
 
     @Step("Checking for compliance of Legend Panel fields")
-    public Dashboard checkLegendPanel() {
+    public DashboardPage checkLegendPanel(String first, String admin, String clientService,
+                                          String engineer, String finances, String humanResources,String salesAndMarketing) {
         locatorLegendPanel(first);
         locatorLegendPanel(admin);
-        locatorLegendPanel(client_service);
+        locatorLegendPanel(clientService);
         locatorLegendPanel(engineer);
         locatorLegendPanel(finances);
-        locatorLegendPanel(human_resources);
-        locatorLegendPanel(sales_and_marketing);
+        locatorLegendPanel(humanResources);
+        locatorLegendPanel(salesAndMarketing);
         return this;
     }
 }

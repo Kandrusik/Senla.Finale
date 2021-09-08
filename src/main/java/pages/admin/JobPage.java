@@ -7,7 +7,7 @@ import org.openqa.selenium.By;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
-public class Job {
+public class JobPage {
 
     SelenideElement addJobTitles = $(By.id("btnAdd"));
     SelenideElement deleteJobTitles = $(By.id("btnDelete"));
@@ -18,28 +18,28 @@ public class Job {
     SelenideElement saveJob = $(By.id("btnSave"));
 
     @Step("Deleting Created Job")
-    public Job setDeleteJobTitlesButton() {
+    public JobPage setDeleteJobTitlesButton() {
         deleteJobTitles.click();
         dialogDeleteJob.click();
         return this;
     }
 
     @Step("Checking the visibility of work")
-    public Job checkTheVisibilityOfWork(String job) {
+    public JobPage checkTheVisibilityOfWork(String job) {
         SelenideElement clickOnJobFlag = $(By.xpath("//a[text()='" + job + "']/../..//*[@name=\"chkSelectRow[]\"]"));
         clickOnJobFlag.shouldNotHave(visible);
         return this;
     }
 
     @Step("Clicking on a flag by name")
-    public Job clickOnJobFlag(String name) {
+    public JobPage clickOnJobFlag(String name) {
         SelenideElement clickOnJobFlag = $(By.xpath("//a[text()='" + name + "']/../..//*[@name=\"chkSelectRow[]\"]"));
         clickOnJobFlag.click();
         return this;
     }
 
     @Step("Filling in the job description fields")
-    public Job jobDescription(String job_title, String job_description, String note) {
+    public JobPage jobDescription(String job_title, String job_description, String note) {
         jobTitle.sendKeys(job_title);
         jobDescription.sendKeys(job_description);
         jobNote.sendKeys(note);
@@ -47,13 +47,13 @@ public class Job {
     }
 
     @Step("Clicking on the add work button")
-    public Job setAddJobButton() {
+    public JobPage clickAddJobButton() {
         addJobTitles.click();
         return this;
     }
 
     @Step("Button to save work")
-    public Job setSaveJobButton() {
+    public JobPage clickSaveJobButton() {
         saveJob.click();
         return this;
     }

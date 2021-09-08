@@ -7,10 +7,10 @@ import org.openqa.selenium.By;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
-public class AddEmployee {
+public class AddEmployeePage {
     public SelenideElement messagePersonalDetails = $(By.xpath("//*[@id=\"pdMainContainer\"]//*[text()='Personal Details']"));
-    SelenideElement firstName = $(By.id("firstName"));
-    SelenideElement lastNameName = $(By.id("lastName"));
+    SelenideElement firstNames = $(By.id("firstName"));
+    SelenideElement lastNameNames = $(By.id("lastName"));
     SelenideElement employeeId = $(By.id("employeeId"));
     SelenideElement saveButton = $(By.id("btnSave"));
     SelenideElement deleteButton = $(By.id("btnDelete"));
@@ -23,7 +23,7 @@ public class AddEmployee {
     }
 
     @Step("Checking the presence of an employee by the locator and clicking on the flag")
-    public AddEmployee checkLocatorFlagButtonAndClickOn(String name) {
+    public AddEmployeePage checkLocatorFlagButtonAndClickOn(String name) {
         SelenideElement flagButton = $(By.xpath("//a[text()='" + name + "']/../..//*[@name=\"chkSelectRow[]\"]"));
         flagButton.shouldHave(visible);
         flagButton.click();
@@ -31,29 +31,29 @@ public class AddEmployee {
     }
 
     @Step("Button for accept deleting employee list")
-    public AddEmployee setAcceptDeleteButton() {
+    public AddEmployeePage clickAcceptDeleteButton() {
         acceptDeleteButton.click();
         return this;
     }
 
     @Step("Button for deleting employee list")
-    public AddEmployee setDeleteButton() {
+    public AddEmployeePage clickDeleteButton() {
         deleteButton.click();
         return this;
     }
 
     @Step("Button for saving employee parameters")
-    public AddEmployee setSaveButton() {
+    public AddEmployeePage clickSaveButton() {
         saveButton.click();
         return this;
     }
 
     @Step("Filling in employee fields")
-    public AddEmployee fieldEmployee(String first_name, String last_name, String employee_ID) {
-        firstName.sendKeys(first_name);
-        lastNameName.sendKeys(last_name);
+    public AddEmployeePage fieldEmployee(String firstName, String lastName, String employeeID) {
+        firstNames.sendKeys(firstName);
+        lastNameNames.sendKeys(lastName);
         employeeId.clear();
-        employeeId.sendKeys(employee_ID);
+        employeeId.sendKeys(employeeID);
         return this;
     }
 }

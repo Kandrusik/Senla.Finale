@@ -7,15 +7,15 @@ import org.openqa.selenium.By;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
-public class Configure {
+public class ConfigurePage {
 
     public SelenideElement messageSearchKeyPerformance = $(By.xpath("//*[@id=\"divFormContainer\"]//*[text()='Search Key Performance Indicators']"));
     SelenideElement addKeyPerformance = $(By.id("btnAdd"));
     SelenideElement listOfJobTitle = $(By.id("defineKpi360_jobTitleCode"));
     SelenideElement chooseQALead = $(By.xpath("//*[@class='formSelect']//*[text()='QA Lead']"));
     SelenideElement keyPerformanceIndicators = $(By.id("defineKpi360_keyPerformanceIndicators"));
-    SelenideElement minRating = $(By.id("defineKpi360_minRating"));
-    SelenideElement maxRating = $(By.id("defineKpi360_maxRating"));
+    SelenideElement minRatings = $(By.id("defineKpi360_minRating"));
+    SelenideElement maxRatings = $(By.id("defineKpi360_maxRating"));
     SelenideElement makeDefaultButton = $(By.id("defineKpi360_makeDefault"));
     SelenideElement saveButton = $(By.id("saveBtn"));
     SelenideElement deleteKeyButton = $(By.id("btnDelete"));
@@ -34,38 +34,38 @@ public class Configure {
     }
 
     @Step("Set delete key button")
-    public Configure setDeleteKeyButton() {
+    public ConfigurePage clickSetDeleteKeyButton() {
         deleteKeyButton.click();
         return this;
     }
 
     @Step("Set accept delete key button")
-    public Configure setAcceptDeleteKeyButton() {
+    public ConfigurePage clickSetAcceptDeleteKeyButton() {
         acceptDeleteKeyButton.click();
         return this;
     }
 
     @Step("Set save button")
-    public Configure setSaveButton() {
+    public ConfigurePage clickSetSaveButton() {
         saveButton.click();
         return this;
     }
 
     @Step("change of personal information")
-    public Configure changePersonalInformation(String key_performance_indicators, String min_rating, String max_rating) {
+    public ConfigurePage changePersonalInformation(String keyIndicators, String minRating, String maxRating) {
         listOfJobTitle.click();
         chooseQALead.click();
-        keyPerformanceIndicators.sendKeys(key_performance_indicators);
-        minRating.clear();
-        minRating.sendKeys(min_rating);
-        maxRating.clear();
-        maxRating.sendKeys(max_rating);
+        keyPerformanceIndicators.sendKeys(keyIndicators);
+        minRatings.clear();
+        minRatings.sendKeys(minRating);
+        maxRatings.clear();
+        maxRatings.sendKeys(maxRating);
         makeDefaultButton.click();
         return this;
     }
 
     @Step("Set add key performance button")
-    public Configure setAddKeyPerformanceButton() {
+    public ConfigurePage clickSetAddKeyPerformanceButton() {
         addKeyPerformance.click();
         return this;
     }

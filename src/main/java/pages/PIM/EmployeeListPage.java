@@ -6,7 +6,7 @@ import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
 
-public class EmployeeList {
+public class EmployeeListPage {
     public SelenideElement firstName = $(By.id("personal_txtEmpFirstName"));
     public SelenideElement lastName = $(By.id("personal_txtEmpLastName"));
 
@@ -18,13 +18,13 @@ public class EmployeeList {
     SelenideElement openJobInfoButton = $(By.xpath("//*[@id=\"sidenav\"]//..//a[text()='Job']"));
 
     @Step("Opening the job information person")
-    public EmployeeList setOpenJobInfoButton() {
+    public EmployeeListPage clickOpenJobInfoButton() {
         openJobInfoButton.click();
         return this;
     }
 
     @Step("Opening the first person")
-    public EmployeeList setOpenFirstPeopleButton() {
+    public EmployeeListPage clickOpenFirstPeopleButton() {
         openFirstPeopleButton.click();
         return this;
     }

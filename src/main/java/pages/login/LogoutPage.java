@@ -6,14 +6,14 @@ import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
 
-public class Logout {
+public class LogoutPage {
 
     public SelenideElement welcomeMessageLogin = $(By.id("logInPanelHeading"));
     SelenideElement menuWelcomeButton = $(By.id("welcome"));
     SelenideElement logoutButton = $(By.xpath("//*[@id=\"welcome-menu\"]//a[text()='Logout']"));
 
     @Step("Log out from the page")
-    public Logout setLogoutButton() {
+    public LogoutPage clickLogoutButton() {
         menuWelcomeButton.click();
         logoutButton.click();
         return this;
